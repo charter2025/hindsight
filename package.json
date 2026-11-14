@@ -1,0 +1,8 @@
+{
+  "name": "hindsight",
+  "private": true,
+  "version": "1.0.0",
+  "description": "Hindsight: a macro time-machine investing game",
+  "engines": { "node": ">=18" },
+  "dependencies": { "@upstash/redis": "^1.41.0" }
+}
