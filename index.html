@@ -225,12 +225,118 @@ h2{font-size:24px} h3{font-size:15px;color:var(--muted);font-weight:700}
 .wire-item .yr{display:block;font-size:10.5px;font-weight:700;color:var(--muted);letter-spacing:.06em;text-transform:uppercase}
 .wire-item.on{border-color:var(--amber);background:var(--amber-soft)}
 @media (max-width:720px){.reel-lead{font-size:24px}}
+
+/* ================= Mobile first: phones get the layout below; desktop keeps the two-column ticket ================= */
+button,.pip,.pm,.opt,.btn{touch-action:manipulation}
+input,textarea,select{font-size:16px}
+.mleft{display:none}
+.reel-hint{display:none}
+@media (max-width:640px){
+  html,body{font-size:15px}
+  .wrap{padding:8px 12px calc(24px + env(safe-area-inset-bottom));gap:12px}
+  .cmd{margin-top:6px;padding:4px 6px 4px 12px}
+  .cmd .clock{display:none}
+  .fkeys .chipbtn{padding:6px 10px}
+  .mast{padding:0}
+  .brand{font-size:34px}
+  .tag{font-size:13px}
+  .card,.board{border-radius:16px;padding:14px}
+  .board{flex-wrap:nowrap;align-items:center;gap:10px}
+  .flaps{gap:4px}
+  .flap{width:30px;height:42px;font-size:26px;border-radius:8px}
+  .bigval{font-size:28px}
+  .boardinfo{gap:2px}
+  #stageLbl{font-size:12px}
+  .crawl{font-size:12.5px;border-radius:10px}
+  .crawl-tag{padding:8px 9px}
+  /* news reel: one big headline, tap to advance */
+  .reel{padding:14px 16px;border-left-width:5px}
+  .reel-body{grid-template-columns:1fr;gap:0}
+  .reel .wire{display:none}
+  .reel-lead{font-size:22px;min-height:2.5em;cursor:pointer}
+  .reel-hint{display:block;font-size:12px;color:var(--muted);margin-top:6px}
+  /* tape above the ticket, compact 3-up */
+  .grid2{display:flex;flex-direction:column;gap:12px}
+  .grid2>div:last-child{order:-1}
+  .tape{grid-template-columns:repeat(3,minmax(0,1fr));gap:6px}
+  .tape div{padding:7px 8px;border-radius:10px}
+  .tape b{font-size:16px}
+  .tape small{font-size:10.5px;line-height:1.25;display:block}
+  .tape small:last-child{display:none}
+  /* ticket rows */
+  .ticket-head{margin-bottom:2px}
+  .ticket-head .left{display:none}
+  .row{grid-template-columns:minmax(0,1fr) auto;gap:6px 10px;padding:12px 0}
+  .adesc{font-size:12px}
+  .perf{min-width:0}
+  .pips{grid-column:1 / -1;justify-content:space-between;gap:6px}
+  .pip{flex:1;height:34px;width:auto;border-radius:10px}
+  .pm{width:44px;height:34px;border-radius:10px;font-size:18px}
+  .holdv{min-width:0}
+  /* sticky action bar at thumb height */
+  #ticketActions{position:sticky;bottom:calc(8px + env(safe-area-inset-bottom));z-index:4;margin:12px -6px 0;padding:10px;background:var(--panel);border:1px solid var(--line);border-radius:14px;box-shadow:0 8px 28px rgba(16,24,40,.16);display:flex;align-items:center;gap:8px;flex-wrap:nowrap}
+  #ticketActions .btn{flex:1;padding:13px 12px}
+  #ticketActions .btn.ghost{flex:0 0 auto}
+  .mleft{display:block;font-size:13px;color:var(--muted);white-space:nowrap;padding:0 4px}
+  .mleft b{display:block;font-size:20px;color:var(--amber);line-height:1}
+  /* bottom-sheet dialogs */
+  .ov{align-items:flex-end;padding:0}
+  .modal{max-width:none;border-radius:20px 20px 0 0;padding:18px 16px calc(18px + env(safe-area-inset-bottom));max-height:88vh}
+  .opts{grid-template-columns:1fr 1fr}
+  .opt{padding:14px 12px;font-size:15px}
+  /* home */
+  .mode{padding:14px}
+  .stats{grid-template-columns:repeat(4,1fr);gap:6px}
+  .stats b{font-size:18px}
+  ol.rules{font-size:14px}
+  /* reveal */
+  .score{font-size:60px}
+  .parts{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .scoreline + .parts div:first-child{grid-column:1 / -1}
+  .parts b{font-size:18px}
+  th,td{padding:7px 5px;font-size:13px}
+  #reveal .actions{flex-direction:column}
+  #reveal .actions .btn{width:100%}
+  #postWrap{flex-direction:column;align-items:stretch}
+  .backstory .y{font-size:18px}
+  .toast{bottom:calc(90px + env(safe-area-inset-bottom))}
+}
+
+/* ticker v2: JS-measured distance, works on every screen */
+.crawl{display:flex !important;align-items:center;background:var(--text);color:#fff;border-radius:12px;overflow:hidden;font-size:13.5px;font-weight:500;min-height:38px}
+.crawl-tag{background:var(--down);color:#fff;font-weight:800;letter-spacing:.1em;font-size:11px;padding:0 12px;align-self:stretch;display:flex;align-items:center;flex:none}
+.crawl-win{overflow:hidden;flex:1;min-width:0;-webkit-mask-image:linear-gradient(90deg,transparent 0,#000 18px,#000 calc(100% - 18px),transparent);mask-image:linear-gradient(90deg,transparent 0,#000 18px,#000 calc(100% - 18px),transparent)}
+.crawl .track{display:flex;width:max-content;white-space:nowrap;padding:9px 0 9px 14px;will-change:transform;animation:none}
+.crawl span{margin-right:30px;color:#e9ebf1;flex:none}
+.crawl span b{color:#fff;margin-right:6px;font-weight:700}
+.crawl .up{color:#4ade9a} .crawl .down{color:#ff7b7d}
+@keyframes crawl{from{transform:translate3d(0,0,0)}to{transform:translate3d(var(--dist,-50%),0,0)}}
+@media (prefers-reduced-motion: reduce){.crawl .track{animation:none !important}.crawl-win{overflow-x:auto;-webkit-overflow-scrolling:touch;mask-image:none;-webkit-mask-image:none}}
+.brand{line-height:1;margin-bottom:6px}
+.mode.primary{background:var(--amber);border-color:var(--amber);color:#fff}
+.mode.primary b,.mode.primary span{color:#fff}
+@media (max-width:640px){
+  .crawl{font-size:12.5px;border-radius:10px;min-height:34px}
+  .crawl .track{padding:8px 0 8px 12px}
+  .hero{display:flex;flex-direction:column;gap:12px}
+  .hero .modes{order:-1}
+  .hero .card p.muted{font-size:14px}
+  body.ingame .tag{display:none}
+  body.ingame .brand{font-size:26px;margin:0}
+  body.ingame .mast{display:none}
+  .cmd{position:sticky;top:0;z-index:6;box-shadow:0 4px 14px rgba(16,24,40,.06)}
+  .mode b{font-size:18px}
+  .lbtabs{flex-wrap:wrap}
+  #lb table th:nth-child(4),#lb table td:nth-child(4){white-space:nowrap}
+}
+.cmdbrand{display:none;font-weight:800;letter-spacing:-.02em;font-size:18px}.cmdbrand span{color:var(--amber)}
+@media (max-width:640px){body.ingame .cmdbrand{display:inline}body.ingame .cmd .prompt{display:none}}
 </style>
 </head>
 <body>
 <div class="wrap">
   <div class="cmd" role="banner">
-    <span class="prompt">&gt;</span><span class="brandt">HSGT</span><span class="gok">GO</span>
+    <span class="prompt">&gt;</span><span class="cmdbrand">Hind<span>sight</span></span><span class="brandt">HSGT</span><span class="gok">GO</span>
     <nav class="fkeys" aria-label="Sections">
       <button class="chipbtn" id="navHome" type="button"><b>1</b>HOME</button>
       <button class="chipbtn" id="navLb" type="button"><b>2</b>LDBD</button>
@@ -238,6 +344,7 @@ h2{font-size:24px} h3{font-size:15px;color:var(--muted);font-weight:700}
     </nav>
     <span class="sp"></span><span class="clock num" id="clock"></span>
   </div>
+  <div class="crawl" id="crawlBar"><span class="crawl-tag" id="crawlTag">TAPE</span><div class="crawl-win" id="crawlWin"><div class="track" id="crawl"></div></div></div>
   <header class="mast">
     <div>
       <div class="brand">Hind<span>sight</span></div>
@@ -260,7 +367,7 @@ h2{font-size:24px} h3{font-size:15px;color:var(--muted);font-weight:700}
       <div class="stats" id="stats" style="margin-top:14px"></div>
     </div>
     <div class="modes">
-      <button class="mode" id="playDaily" type="button"><div><b id="dailyLabel">Daily puzzle</b><br><span id="dailySub">Same window for everyone today</span></div><b>&rarr;</b></button>
+      <button class="mode primary" id="playDaily" type="button"><div><b id="dailyLabel">Daily puzzle</b><br><span id="dailySub">Same window for everyone today</span></div><b>&rarr;</b></button>
       <button class="mode" id="playPractice" type="button"><div><b>Practice</b><br><span>Random window, unlimited plays</span></div><b>&rarr;</b></button>
       <div class="mode" style="flex-direction:column;align-items:stretch">
         <div><b>Challenge a friend</b><br><span>Paste a code to play their exact window and chase their score</span></div>
@@ -283,11 +390,10 @@ h2{font-size:24px} h3{font-size:15px;color:var(--muted);font-weight:700}
         <div class="muted" style="font-size:13px" id="stageLbl">Start of year 1</div>
       </div>
     </div>
-    <div class="crawl" aria-hidden="true"><span class="crawl-tag">LIVE</span><div class="crawl-win"><div class="track" id="crawl"></div></div></div>
     <div class="reel card" aria-live="polite">
       <div class="reel-head"><span class="reel-tag">News wire</span><span class="reel-when" id="reelWhen"></span><span class="reel-dots" id="reelDots"></span></div>
       <div class="reel-body">
-        <p class="reel-lead" id="reelLead"></p>
+        <div><p class="reel-lead" id="reelLead"></p><span class="reel-hint" id="reelHint"></span></div>
         <div class="wire" id="wire"></div>
       </div>
     </div>
@@ -450,12 +556,28 @@ function newGame(mode,seed,challenge){
 }
 function chipsUsed(){return G.chips.reduce((a,b)=>a+b,0);}
 
+/* ---------- ticker tape ---------- */
+function setTicker(html,tag){
+  const tr=$("crawl");$("crawlTag").textContent=tag;tr.innerHTML=html+html; // doubled for a seamless loop
+  tr.style.animation="none";
+  requestAnimationFrame(()=>{const half=tr.scrollWidth/2;tr.style.setProperty("--dist",-half+"px");tr.style.animation=`crawl ${Math.max(18,half/55)}s linear infinite`;});
+}
+function greatestHits(){
+  const items=[];
+  for(const a of Object.keys(ASSETS)){if(a==="CASH")continue;const d=DATA.returns[a];if(!d)continue;
+    const ys=Object.keys(d).filter(y=>+y>=1925);if(!ys.length)continue;
+    const best=ys.reduce((m,y)=>d[y]>d[m]?y:m,ys[0]),worst=ys.reduce((m,y)=>d[y]<d[m]?y:m,ys[0]);
+    items.push([best,a,d[best]],[worst,a,d[worst]]);}
+  const r=rng(hashStr("hits-"+todayKey()));const sh=shuffle(items,r).slice(0,18);
+  return sh.map(([y,a,v])=>`<span><b>${y} ${ASSETS[a].n.toUpperCase()}</b><i class="${cls(v)}" style="font-style:normal">${fmtP(v,0)}</i></span>`).join("");
+}
 /* ---------- rendering: game ---------- */
 let reelTimer=null,reelItems=[],reelIdx=0;
 function showReel(i){
   reelIdx=i;const it=reelItems[i];if(!it)return;const lead=$("reelLead");
   lead.classList.remove("in");void lead.offsetWidth;lead.textContent=it.h;lead.classList.add("in");
   $("reelWhen").textContent=it.when;
+  $("reelHint").textContent=reelItems.length>1?`Headline ${i+1} of ${reelItems.length} · tap for next`:"";
   $("reelDots").innerHTML=reelItems.map((_,j)=>`<i class="${j===i?"on":""}"></i>`).join("");
   document.querySelectorAll(".wire-item").forEach((b,j)=>b.classList.toggle("on",j===i));
 }
@@ -463,6 +585,7 @@ function startReel(items){
   reelItems=items;clearInterval(reelTimer);showReel(0);
   if(!reduced()&&items.length>1)reelTimer=setInterval(()=>showReel((reelIdx+1)%reelItems.length),5000);
 }
+$("reelLead").addEventListener("click",()=>{if(reelItems.length>1){clearInterval(reelTimer);showReel((reelIdx+1)%reelItems.length);}});
 document.addEventListener("click",e=>{const b=e.target.closest(".wire-item");if(!b)return;clearInterval(reelTimer);showReel(+b.dataset.i);});
 function setFlaps(text,animate){const el=$("flaps");el.innerHTML="";for(const ch of text){const f=document.createElement("div");f.className="flap"+(animate?" turn":"");f.textContent=ch;el.appendChild(f);}}
 function knownYear(){return [G.P.S-1,G.P.S+1,G.P.S+3][G.stage];}
@@ -493,7 +616,7 @@ function renderGame(){
   $("tape").innerHTML=tiles.map(t=>`<div><small>${t[0]}</small><b>${t[1]}</b><small>${t[2]}</small></div>`).join("");
   const crawlHTML=P.opts.map(a=>{const lr=lastReturns(a);return `<span><b>${ASSETS[a].n.toUpperCase()}</b><i class="${cls(lr.p)}" style="font-style:normal">${fmtP(lr.p)}</i></span>`;}).join("")+
     (NEWS[ky]||[]).map(h=>`<span>${esc(h.toUpperCase())}</span>`).join("");
-  $("crawl").innerHTML=crawlHTML+crawlHTML;
+  setTicker(crawlHTML,"LIVE");
   renderTicket();
 }
 function renderTicket(){
@@ -516,7 +639,7 @@ function renderTicket(){
   }).join("");
   const act=$("ticketActions");
   if(editing){
-    act.innerHTML=`<button class="btn" id="lockIn" type="button" ${chipsUsed()===10?"":"disabled"}>Lock in</button>`+
+    act.innerHTML=`<span class="mleft">Chips left<b>${10-chipsUsed()}</b></span><button class="btn" id="lockIn" type="button" ${chipsUsed()===10?"":"disabled"}>Lock in</button>`+
       `<button class="btn ghost" id="clearChips" type="button">Clear</button>`+(G.stage>0?`<button class="btn ghost" id="cancelReb" type="button">Back to holding</button>`:"");
   }else{
     act.innerHTML=`<button class="btn" id="holdBtn" type="button">Hold everything</button><button class="btn ghost" id="rebBtn" type="button">Rebalance</button>`;
@@ -595,7 +718,7 @@ function shareText(){
   return `${head}  ${sc.total}/1000\n$10,000 → ${fmt$(G.value)} (${fmtP((G.value/10000-1)*100,0)})\nS&P same window: ${fmtP((sc.spx/10000-1)*100,0)} · beat ${Math.round(sc.pct*100)}% of plays\nvs S&P by stretch ${segSquares()}\nCalls ${G.calls.filter(Boolean).length}/3\nPlay my window: ${code()}${API?"\n"+location.origin+"/?c="+code():""}`;
 }
 function lineChart(series){ // series: [{name,vals,color}]
-  const W=640,H=220,pl=56,pr=16,pt=12,pb=28;const n=series[0].vals.length;
+  const narrow=window.innerWidth<640;const W=narrow?360:640,H=narrow?230:220,pl=narrow?44:56,pr=10,pt=12,pb=28;const n=series[0].vals.length;
   const all=series.flatMap(s=>s.vals);let lo=Math.min(...all),hi=Math.max(...all);
   const x=i=>pl+(W-pl-pr)*i/(n-1),y=v=>pt+(H-pt-pb)*(1-(v-lo)/(hi-lo));
   const raw=(hi-lo)/4,mag=Math.pow(10,Math.floor(Math.log10(raw))),step=[1,2,2.5,5,10].map(k=>k*mag).find(k=>k>=raw);lo=Math.floor(lo/step)*step;hi=Math.ceil(hi/step)*step;
@@ -631,7 +754,7 @@ function renderReveal(animate){
    <p class="note" style="margin:10px 0 0">Cash alone would have grown to ${fmt$(sc.cash)}.</p>
   </div>
   <div class="card"><h3>The path</h3>${lineChart([
-    {name:"You",vals:monthlyPath(P,G.plan),labels:[[0,"Start"],...years.map((y,i)=>[12*(i+1),"End "+y])],color:"var(--c1)",w:2.5},
+    {name:"You",vals:monthlyPath(P,G.plan),labels:[[0,"Start"],...years.map((y,i)=>[12*(i+1),window.innerWidth<640?String(y):"End "+y])],color:"var(--c1)",w:2.5},
     {name:"S&P 500",vals:monthlySingle("SPX",years),labels:[],color:"var(--c2)",w:1.5},
     {name:"Cash",vals:monthlySingle("CASH",years),labels:[],color:"var(--c3)",w:1.5}])}</div>
   <div class="card tbl"><h3>Every option, ${S}&ndash;${S+4}</h3><table><thead><tr><th>Option</th>${years.map(y=>`<th>${y}</th>`).join("")}<th>5 yrs</th></tr></thead><tbody>
@@ -713,7 +836,9 @@ async function loadLb(){
 $("lbToday").onclick=()=>{lbMode="today";loadLb();};$("lbAll").onclick=()=>{lbMode="all";loadLb();};
 
 /* ---------- navigation ---------- */
-function show(id){["home","game","reveal","lb","how"].forEach(s=>$(s).classList.toggle("hidden",s!==id));if(id==="home")renderHome();if(id==="lb")loadLb();}
+function show(id){["home","game","reveal","lb","how"].forEach(s=>$(s).classList.toggle("hidden",s!==id));
+  document.body.classList.toggle("ingame",id==="game"||id==="reveal");
+  if(id!=="game")setTicker(greatestHits(),"HISTORY");if(id==="home")renderHome();if(id==="lb")loadLb();}
 function openModal(h){$("modal").innerHTML=h;$("ov").classList.add("show");const f=$("modal").querySelector("button,input");if(f)f.focus();}
 function closeModal(){$("ov").classList.remove("show");}
 function renderHome(){
