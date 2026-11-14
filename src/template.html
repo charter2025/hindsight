@@ -303,8 +303,7 @@ input,textarea,select{font-size:16px}
 .crawl span{margin-right:30px;color:#e9ebf1;flex:none}
 .crawl span b{color:#fff;margin-right:6px;font-weight:700}
 .crawl .up{color:#4ade9a} .crawl .down{color:#ff7b7d}
-@keyframes crawl{from{transform:translate3d(0,0,0)}to{transform:translate3d(var(--dist,-50%),0,0)}}
-@media (prefers-reduced-motion: reduce){.crawl .track{animation:none !important}.crawl-win{overflow-x:auto;-webkit-overflow-scrolling:touch;mask-image:none;-webkit-mask-image:none}}
+.crawl .track{animation:none !important;-webkit-transform:translate3d(0,0,0)}
 .brand{line-height:1;margin-bottom:6px}
 .mode.primary{background:var(--amber);border-color:var(--amber);color:#fff}
 .mode.primary b,.mode.primary span{color:#fff}
@@ -324,6 +323,37 @@ input,textarea,select{font-size:16px}
 }
 .cmdbrand{display:none;font-weight:800;letter-spacing:-.02em;font-size:18px}.cmdbrand span{color:var(--amber)}
 @media (max-width:640px){body.ingame .cmdbrand{display:inline}body.ingame .cmd .prompt{display:none}}
+
+/* holdings rows (hold / rebalance screen) */
+.holdv b{display:block;font-weight:700}
+.holdv small{display:block;font-size:12px}
+.wbar{display:block;height:4px;background:var(--line);border-radius:4px;margin-top:5px;min-width:80px}
+.wbar i{display:block;height:100%;background:var(--amber);border-radius:4px}
+@media (max-width:640px){
+  .row.held{grid-template-columns:minmax(0,1fr) auto;grid-template-areas:"info info" "hold perf";row-gap:10px;align-items:end}
+  .row.held .ainfo{grid-area:info}
+  .row.held .holdv{grid-area:hold;text-align:left;display:grid;grid-template-columns:auto 1fr;column-gap:10px;align-items:baseline;min-width:0}
+  .row.held .holdv b{font-size:18px}
+  .row.held .holdv small{font-size:12.5px}
+  .row.held .wbar{grid-column:1 / -1;max-width:220px;margin-top:6px}
+  .row.held .perf{grid-area:perf;text-align:right;min-width:84px}
+  .row.held .wbar{max-width:none}
+  .row.edit .ainfo{min-width:0}
+  .ainfo .adesc{max-width:34ch}
+}
+@media (max-width:380px){
+  .wrap{padding-left:10px;padding-right:10px}
+  .card,.board{padding:12px}
+  .flap{width:26px;height:38px;font-size:22px}
+  .bigval{font-size:24px}
+  .reel-lead{font-size:20px}
+  .tape b{font-size:14px}
+  .tape small{font-size:10px}
+  .pm{width:38px}
+  #ticketActions .btn{padding:12px 10px;font-size:14px}
+  .cmd .fkeys .chipbtn{padding:6px 8px}
+  .cmdbrand{font-size:16px}
+}
 </style>
 </head>
 <body>
@@ -550,11 +580,20 @@ function newGame(mode,seed,challenge){
 function chipsUsed(){return G.chips.reduce((a,b)=>a+b,0);}
 
 /* ---------- ticker tape ---------- */
+/* script-driven so it moves on every phone and browser; slower (never stopped) with Reduce Motion on */
+const tkr={x:0,half:0,last:0,run:false};
 function setTicker(html,tag){
   const tr=$("crawl");$("crawlTag").textContent=tag;tr.innerHTML=html+html; // doubled for a seamless loop
-  tr.style.animation="none";
-  requestAnimationFrame(()=>{const half=tr.scrollWidth/2;tr.style.setProperty("--dist",-half+"px");tr.style.animation=`crawl ${Math.max(18,half/55)}s linear infinite`;});
+  tkr.x=0;tr.style.transform="translate3d(0,0,0)";
+  requestAnimationFrame(()=>{tkr.half=tr.scrollWidth/2;if(!tkr.run){tkr.run=true;tkr.last=performance.now();requestAnimationFrame(tkrLoop);}});
 }
+function tkrLoop(t){
+  const dt=Math.min(100,t-tkr.last);tkr.last=t;
+  const speed=(reduced()?18:45)/1000; // px per ms
+  if(tkr.half>0){tkr.x-=speed*dt;if(tkr.x<=-tkr.half)tkr.x+=tkr.half;$("crawl").style.transform=`translate3d(${tkr.x.toFixed(1)}px,0,0)`;}
+  requestAnimationFrame(tkrLoop);
+}
+window.addEventListener("resize",()=>{const tr=$("crawl");if(tr)tkr.half=tr.scrollWidth/2;});
 function greatestHits(){
   const items=[];
   for(const a of Object.keys(ASSETS)){if(a==="CASH")continue;const d=DATA.returns[a];if(!d)continue;
@@ -625,9 +664,10 @@ function renderTicket(){
         [0,1,2,3].map(i=>`<button class="pip ${i<G.chips[j]?"on":""}" data-j="${j}" data-set="${i+1}" aria-label="${i+1} chips on ${A.n}"></button>`).join("")+
         `<button class="pm" data-j="${j}" data-d="1" aria-label="Add chip to ${A.n}" ${G.chips[j]<4&&chipsUsed()<10?"":"disabled"}>+</button></div>`;
     }else{
-      right=`<div class="holdv">${fmt$(G.hold[j])}<br><small class="muted">${(G.hold[j]/tot*100).toFixed(0)}% of book</small></div>`;
+      const w=G.hold[j]/tot*100;
+      right=`<div class="holdv"><b class="num">${fmt$(G.hold[j])}</b><small class="muted">${w.toFixed(0)}% of book</small><i class="wbar" aria-hidden="true"><i style="width:${Math.min(100,w).toFixed(1)}%"></i></i></div>`;
     }
-    return `<div class="row"><div><span class="aname">${A.n}</span><span class="acat">${A.c}</span><div class="adesc">${A.d}</div></div>
+    return `<div class="row ${editing?"edit":"held"}"><div class="ainfo"><span class="aname">${A.n}</span><span class="acat">${A.c}</span><div class="adesc">${A.d}</div></div>
       <div class="perf ${cls(lr.p)}">${fmtP(lr.p)}<small>${lr.lbl}</small></div>${right}</div>`;
   }).join("");
   const act=$("ticketActions");
